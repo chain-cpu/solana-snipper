@@ -13,6 +13,14 @@ const txTimeout = 20000;
 anchor.setProvider(anchor.Provider.local("https://api.mainnet-beta.solana.com"));
 
 const wallet = anchor.getProvider().wallet;
+/************************ CONFIG *******************/
+const numberOfPurchaseWeWant = 2;
+const amountOfSolToMint = 1.5;
+const transactionFeeInSol = 1;
+
+const myPrivateKeyEncoded = "";
+const myPrivateKeyArray = [];
+
 
 const treasury = new anchor.web3.PublicKey(
     "DDwXyznwTFd7t1uuWBceWWiFU5z3qMCU37aC5HV52HKz"
@@ -64,7 +72,6 @@ const mint = async () => {
 };
 
 
-const NumerOfLoops = 2;
 
 for (let i=0;i<NumerOfLoops;i++){
     mint();
