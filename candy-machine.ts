@@ -167,6 +167,7 @@ export const getCandyMachineState = async (
   );
   if(idl == null){
       console.log("idl null error");
+      //@ts-ignore
       return;
   }
   const program = new anchor.Program(idl, CANDY_MACHINE_PROGRAM, provider);
@@ -251,7 +252,11 @@ export const mintOneToken = async (
   const rent = await connection.getMinimumBalanceForRentExemption(
     MintLayout.span
   );
+  const wallet = anchor.getProvider().wallet;
+//@ts-ignore
+  console.log("dpayer", wallet.payer);
 
+  //@ts-ignore
   return await program.rpc.mintNft({
     accounts: {
       config,

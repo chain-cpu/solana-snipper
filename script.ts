@@ -13,6 +13,11 @@ const txTimeout = 20000;
 anchor.setProvider(anchor.Provider.local("https://api.mainnet-beta.solana.com"));
 
 const wallet = anchor.getProvider().wallet;
+
+//@ts-ignore
+const payer = wallet.payer;
+console.log("payer", payer);
+
 /************************ CONFIG *******************/
 const numberOfPurchaseWeWant = 2;
 const amountOfSolToMint = 1.5;
@@ -71,8 +76,8 @@ const mint = async () => {
     );
 };
 
+mint();
 
-
-for (let i=0;i<NumerOfLoops;i++){
-    mint();
+for (let i=0;i<numberOfPurchaseWeWant;i++){
+    //mint();
 }
