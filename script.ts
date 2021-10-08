@@ -1,5 +1,5 @@
 import * as anchor from "@project-serum/anchor";
-
+import * as fs from 'fs';
 import {
     CandyMachine,
     awaitTransactionSignatureConfirmation,
@@ -8,26 +8,28 @@ import {
     //shortenAddress,
 } from "./candy-machine";
 
-anchor.setProvider(anchor.Provider.local("https://api.devnet.solana.com"));
+const txTimeout = 20000;
 
+anchor.setProvider(anchor.Provider.local("https://api.mainnet-beta.solana.com"));
+
+const wallet = anchor.getProvider().wallet;
 
 const treasury = new anchor.web3.PublicKey(
-    "JCFHBoAxpFrKi9kShQdZCDUWjwCe1W25EvVza8DL8xwz"
+    "DDwXyznwTFd7t1uuWBceWWiFU5z3qMCU37aC5HV52HKz"
 );
-console.log(treasury.toBase58())
 
 const config = new anchor.web3.PublicKey(
-    process.env.REACT_APP_CANDY_MACHINE_CONFIG!
+    "Eafik1C9duUD5U7cyWQtv7rvtzUWnX72dxSUn8PJnayr"
 );
 
 const candyMachineId = new anchor.web3.PublicKey(
-    process.env.REACT_APP_CANDY_MACHINE_ID!
+    "Dvq4qB7mUvFETwdAE49NTrpyzp9tQG9ScDQLURtyH94d"
 );
 
 const rpcHost = "https://api.devnet.solana.com";
 const connection = new anchor.web3.Connection(rpcHost);
 
-//console.log("treasury", treasury)
+console.log(wallet.publicKey);
 
 const mint = async () => {
     
@@ -41,23 +43,29 @@ const mint = async () => {
     const {candyMachine, goLiveDate, itemsRemaining} =
     await getCandyMachineState(
         anchorWallet,
-        props.candyMachineId,
-        props.connection
+        candyMachineId,
+        connection
     );
     
     const mintTxId = await mintOneToken(
         candyMachine,
-        props.config,
+        config,
         wallet.publicKey,
-        props.treasury
+        treasury
     );
 
     const status = await awaitTransactionSignatureConfirmation(
         mintTxId,
-        props.txTimeout,
-        props.connection,
+        txTimeout,
+        connection,
         "singleGossip",
         false
     );
 };
 
+
+const NumerOfLoops = 2;
+
+for (let i=0;i<NumerOfLoops;i++){
+    mint();
+}
