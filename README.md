@@ -29,4 +29,3 @@ npm i -g ts-node
 ANCHOR_WALLET=~/.config/solana/id.json ts-node script.ts
 ```
 
-
