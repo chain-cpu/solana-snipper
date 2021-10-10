@@ -40,8 +40,11 @@ const candyMachineId = new anchor.web3.PublicKey(
 
 
 const rpcHost = "https://api." + process.env.APP_SOLANA_NETWORK + ".solana.com";
+console.log(rpcHost)
 const connection = new anchor.web3.Connection(rpcHost);
 const txTimeout = process.env.TX_TIME_OUT;
+
+
 
 const mint = async() => {
   const {
@@ -55,34 +58,45 @@ const mint = async() => {
     candyMachineId,
     connection
   );
-  
   console.log("itemsAvailable", itemsAvailable);
   console.log("itemsRemaining", itemsRemaining);
   console.log("itemsRedeemed", itemsRedeemed);
 
   if (wallet && candyMachine?.program) {
     console.log(anchorWallet);
-    const mintTxId = await mintOneToken(
-      candyMachine,
-      config,
-      anchorWallet.publicKey,
-      treasury
-    );
+    try{
+      const mintTxId = await mintOneToken(
+        candyMachine,
+        config,
+        anchorWallet.publicKey,
+        treasury
+      );
 
-    const status = await awaitTransactionSignatureConfirmation(
-      mintTxId,
-      txTimeout,
-      connection,
-      "singleGossip",
-      false
-    );
-
+      const status = await awaitTransactionSignatureConfirmation(
+        mintTxId,
+        txTimeout,
+        connection,
+        "singleGossip",
+        false
+      );
+      console.log("mint succeed");
+    }
+    catch(err){
+      console.log("mint failed");
+    }
+    
 
   }
 
 }
+
 const mintAmount = process.env.MINT_AMOUNT;
-for(let i=0;i<mintAmount;i++){
-  mint();
+const mintN = async () => {
+  for(let i=0;i<mintAmount;i++){
+    console.log("minting " + i + "...");
+    mint();
+  }
+  
 }
 
+mintN();
