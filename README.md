@@ -26,6 +26,6 @@ npm i -g ts-node
 
 3. Run
 ```
-ANCHOR_WALLET=~/.config/solana/id.json ts-node script.ts
+ts-node ./src/script.ts
 ```
 
