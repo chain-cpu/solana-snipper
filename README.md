@@ -39,7 +39,7 @@ APP_TREASURY_ADDRESS=__PLACEHOLDER__
 
 APP_SOLANA_NETWORK=devnet
 APP_SOLANA_RPC_HOST=https://explorer-api.devnet.solana.com
-ANCHOR_WALLET=~/.config/solana/id.json
+WALLET_PRIVATE_KEY=__PLACEHOLDER__
 ```
 4. Run
 ```
