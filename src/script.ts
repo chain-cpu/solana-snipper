@@ -1,8 +1,10 @@
 //@ts-nocheck
 import * as anchor from "@project-serum/anchor";
 
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, Keypair } from "@solana/web3.js";
 import dotenv from "dotenv";
+import {decode} from 'base58-universal';
+
 import {
   CandyMachine,
   awaitTransactionSignatureConfirmation,
@@ -13,10 +15,23 @@ import {
 
 dotenv.config();
 
+const rpcHost = "https://api." + process.env.APP_SOLANA_NETWORK + ".solana.com";
+console.log(rpcHost)
+const connection = new anchor.web3.Connection(rpcHost);
+const txTimeout = process.env.TX_TIME_OUT;
+
 anchor.setProvider(anchor.Provider.local("https://api.mainnet-beta.solana.com"));
 
 const wallet = anchor.getProvider().wallet;
 
+const privateKey = process.env.WALLET_PRIVATE_KEY;
+
+const byte_array: Uint8Array = decode(privateKey)
+
+//@ts-ignore
+const keyPair = Keypair.fromSecretKey(byte_array);
+
+anchor.setProvider(new anchor.Provider(connection, new anchor.Wallet(keyPair)));
 
 const anchorWallet = {
   publicKey: wallet.publicKey,
@@ -38,11 +53,6 @@ const candyMachineId = new anchor.web3.PublicKey(
   process.env.APP_CANDY_MACHINE_ID
 );
 
-
-const rpcHost = "https://api." + process.env.APP_SOLANA_NETWORK + ".solana.com";
-console.log(rpcHost)
-const connection = new anchor.web3.Connection(rpcHost);
-const txTimeout = process.env.TX_TIME_OUT;
 
 
 
