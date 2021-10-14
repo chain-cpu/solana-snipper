@@ -20,9 +20,6 @@ console.log(rpcHost)
 const connection = new anchor.web3.Connection(rpcHost);
 const txTimeout = process.env.TX_TIME_OUT;
 
-anchor.setProvider(anchor.Provider.local("https://api.mainnet-beta.solana.com"));
-
-const wallet = anchor.getProvider().wallet;
 
 const privateKey = process.env.WALLET_PRIVATE_KEY;
 
@@ -32,6 +29,8 @@ const byte_array: Uint8Array = decode(privateKey)
 const keyPair = Keypair.fromSecretKey(byte_array);
 
 anchor.setProvider(new anchor.Provider(connection, new anchor.Wallet(keyPair)));
+
+const wallet = anchor.getProvider().wallet;
 
 const anchorWallet = {
   publicKey: wallet.publicKey,
